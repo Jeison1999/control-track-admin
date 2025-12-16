@@ -1,0 +1,101 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ isEditMode ? 'Ver' : 'Nueva' }} pertenencia</h2>
+    <button class="btn-back" routerLink="/pertenencias">← Volver</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Cargando...</div>
+
+  <form *ngIf="!loading" (ngSubmit)="save()" class="pertenencia-form">
+    <div class="form-group full-width">
+      <label for="usuario">Usuario *</label>
+      <select id="usuario" [(ngModel)]="pertenencia.usuarioId" name="usuario" required [disabled]="isEditMode">
+        <option value="">Selecciona un usuario</option>
+        <option *ngFor="let u of usuarios" [value]="u.id">{{ u.nombres }} {{ u.apellidos }} - {{ u.documento }}</option>
+      </select>
+    </div>
+
+    <div class="form-group full-width">
+      <label for="tipo">Tipo de pertenencia *</label>
+      <select id="tipo" [(ngModel)]="pertenencia.tipoPertenenciaId" (change)="onTipoChange(pertenencia.tipoPertenenciaId!)" name="tipo" required [disabled]="isEditMode">
+        <option value="">Selecciona un tipo</option>
+        <option *ngFor="let t of tiposPertenencia" [value]="t.id">{{ t.nombre }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="selectedTipo" class="dynamic-fields">
+      <h3>Datos de {{ selectedTipo.nombre }}</h3>
+      <div class="form-grid">
+        <div *ngFor="let campo of selectedTipo.campos" class="form-group">
+          <label [for]="campo.nombre">
+            {{ campo.nombre }}
+            <span *ngIf="campo.requerido" class="required">*</span>
+          </label>
+
+          <!-- Texto -->
+          <input *ngIf="campo.tipo === 'texto' || campo.tipo === 'placa' || campo.tipo === 'email' || campo.tipo === 'telefono'"
+            [id]="campo.nombre"
+            [type]="campo.tipo === 'email' ? 'email' : 'text'"
+            [(ngModel)]="datos[campo.nombre]"
+            [name]="campo.nombre"
+            [placeholder]="'Ingresa ' + campo.nombre"
+            [required]="campo.requerido"
+            [disabled]="isEditMode"
+          />
+
+          <!-- Número -->
+          <input *ngIf="campo.tipo === 'numero'"
+            [id]="campo.nombre"
+            type="number"
+            [(ngModel)]="datos[campo.nombre]"
+            [name]="campo.nombre"
+            [placeholder]="'Ingresa ' + campo.nombre"
+            [required]="campo.requerido"
+            [disabled]="isEditMode"
+          />
+
+          <!-- Fecha -->
+          <input *ngIf="campo.tipo === 'fecha'"
+            [id]="campo.nombre"
+            type="date"
+            [(ngModel)]="datos[campo.nombre]"
+            [name]="campo.nombre"
+            [required]="campo.requerido"
+            [disabled]="isEditMode"
+          />
+
+          <!-- Selección -->
+          <select *ngIf="campo.tipo === 'seleccion'"
+            [id]="campo.nombre"
+            [(ngModel)]="datos[campo.nombre]"
+            [name]="campo.nombre"
+            [required]="campo.requerido"
+            [disabled]="isEditMode"
+          >
+            <option value="">Selecciona una opción</option>
+            <option *ngFor="let opcion of campo.opciones" [value]="opcion">{{ opcion }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isEditMode && pertenencia.estado" class="info-section">
+      <h3>Estado</h3>
+      <div class="info-item">
+        <span class="label">Estado:</span>
+        <span [class.estado-dentro]="pertenencia.estado === 'ADENTRO'" [class.estado-fuera]="pertenencia.estado === 'AFUERA'">
+          {{ pertenencia.estado === 'ADENTRO' ? 'Dentro' : 'Fuera' }}
+        </span>
+      </div>
+      <div class="info-item">
+        <span class="label">Registrado:</span>
+        <span>{{ pertenencia.creadoEn | date: 'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">{{ isEditMode ? 'Volver' : 'Cancelar' }}</button>
+      <button *ngIf="!isEditMode" type="submit" class="btn-primary" [disabled]="loading">{{ loading ? 'Guardando...' : 'Guardar' }}</button>
+    </div>
+  </form>
+</div>

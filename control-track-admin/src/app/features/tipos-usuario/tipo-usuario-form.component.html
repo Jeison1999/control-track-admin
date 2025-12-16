@@ -1,0 +1,69 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ isEditMode ? 'Editar' : 'Nuevo' }} tipo de usuario</h2>
+    <button class="btn-back" routerLink="/tipos-usuario">← Volver</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando...
+  </div>
+
+  <form *ngIf="!loading" (ngSubmit)="save()" class="tipo-usuario-form">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label for="nombre">Nombre del tipo *</label>
+        <input
+          id="nombre"
+          type="text"
+          [(ngModel)]="data.nombre"
+          name="nombre"
+          placeholder="Ej: Empleado, Visitante, Proveedor, Contratista"
+          required
+        />
+        <small class="hint">Nombre descriptivo del tipo de usuario</small>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          [(ngModel)]="data.descripcion"
+          name="descripcion"
+          placeholder="Descripción opcional del tipo de usuario..."
+          rows="4"
+        ></textarea>
+        <small class="hint">Información adicional sobre este tipo de usuario</small>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            [(ngModel)]="data.activo"
+            name="activo"
+          />
+          <span>Tipo activo (disponible para seleccionar)</span>
+        </label>
+        <small class="hint" *ngIf="!data.activo">
+          Los tipos inactivos no aparecerán en los formularios pero se mantiene el historial
+        </small>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <p>
+        <strong>💡 Consejo:</strong> Los tipos de usuario activos estarán disponibles para que los vigilantes 
+        los seleccionen al registrar personas. Los tipos inactivos se ocultan pero no se pierden los registros existentes.
+      </p>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancel()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn-save" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

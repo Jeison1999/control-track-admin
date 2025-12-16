@@ -1,0 +1,114 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ isEditMode ? 'Editar' : 'Nuevo' }} usuario</h2>
+    <button class="btn-back" routerLink="/usuarios">← Volver</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando...
+  </div>
+
+  <form *ngIf="!loading" (ngSubmit)="save()" class="user-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="nombres">Nombres *</label>
+        <input
+          id="nombres"
+          type="text"
+          [(ngModel)]="user.nombres"
+          name="nombres"
+          placeholder="Ingresa los nombres"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="apellidos">Apellidos *</label>
+        <input
+          id="apellidos"
+          type="text"
+          [(ngModel)]="user.apellidos"
+          name="apellidos"
+          placeholder="Ingresa los apellidos"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="tipoDocumento">Tipo de documento *</label>
+        <select
+          id="tipoDocumento"
+          [(ngModel)]="user.tipoDocumento"
+          name="tipoDocumento"
+          required
+        >
+          <option *ngFor="let tipo of tiposDocumento" [value]="tipo.value">
+            {{ tipo.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="documento">Documento *</label>
+        <input
+          id="documento"
+          type="text"
+          [(ngModel)]="user.documento"
+          name="documento"
+          placeholder="Número de documento"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo electrónico *</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="user.email"
+          name="email"
+          placeholder="ejemplo@correo.com"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input
+          id="telefono"
+          type="tel"
+          [(ngModel)]="user.telefono"
+          name="telefono"
+          placeholder="Número de teléfono"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="tipoUsuarioId">Tipo de usuario *</label>
+        <select
+          id="tipoUsuarioId"
+          [(ngModel)]="user.tipoUsuarioId"
+          name="tipoUsuarioId"
+          required
+        >
+          <option value="">Selecciona un tipo</option>
+          <option *ngFor="let tipo of tiposUsuario" [value]="tipo.id">
+            {{ tipo.nombre }}
+          </option>
+        </select>
+        <small class="hint" *ngIf="tiposUsuario.length === 0">
+          No hay tipos de usuario activos. <a routerLink="/tipos-usuario/nuevo">Crear uno</a>
+        </small>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancel()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn-save" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

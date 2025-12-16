@@ -1,0 +1,41 @@
+<div class="users-container">
+  <div class="header">
+    <h2>Usuarios</h2>
+    <button class="btn-primary" routerLink="/usuarios/nuevo">+ Nuevo usuario</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando usuarios...
+  </div>
+
+  <table *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Documento</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Tipo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let u of users">
+        <td>{{ u.nombres }} {{ u.apellidos }}</td>
+        <td>{{ u.tipoDocumento }} {{ u.documento }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.telefono }}</td>
+        <td>{{ u.tipoUsuarioId }}</td>
+        <td class="actions">
+          <button class="btn-edit" [routerLink]="['/usuarios', u.id]">Editar</button>
+          <button class="btn-delete" (click)="deleteUser(u.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && users.length === 0" class="empty-state">
+    No hay usuarios registrados.
+  </div>
+</div>

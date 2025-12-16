@@ -11,9 +11,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
       <nav>
         <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-        <a routerLink="/users" routerLinkActive="active">Usuarios</a>
-        <a routerLink="/guards" routerLinkActive="active">Vigilantes</a>
-        <a routerLink="/belongings" routerLinkActive="active">Pertenencias</a>
+        <a routerLink="/vigilantes" routerLinkActive="active">Vigilantes</a>
+        <a routerLink="/tipos-usuario" routerLinkActive="active">Tipos de usuario</a>
+        <a routerLink="/usuarios" routerLinkActive="active">Usuarios</a>
+        <a routerLink="/tipos-pertenencia" routerLinkActive="active">Tipos de pertenencia</a>
+        <a routerLink="/pertenencias" routerLinkActive="active">Pertenencias</a>
+        <a routerLink="/guards" routerLinkActive="active">Guardias</a>
+        <a routerLink="/belongings" routerLinkActive="active">Objetos</a>
         <a routerLink="/movements" routerLinkActive="active">Movimientos</a>
         <a routerLink="/reports" routerLinkActive="active">Reportes</a>
         <a routerLink="/logs" routerLinkActive="active">Logs</a>

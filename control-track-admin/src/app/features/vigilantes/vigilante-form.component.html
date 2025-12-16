@@ -1,0 +1,77 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ isEditMode ? 'Editar' : 'Nuevo' }} vigilante</h2>
+    <button class="btn-back" routerLink="/vigilantes">← Volver</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando...
+  </div>
+
+  <form *ngIf="!loading" (ngSubmit)="save()" class="vigilante-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="nombres">Nombres *</label>
+        <input
+          id="nombres"
+          type="text"
+          [(ngModel)]="data.nombres"
+          name="nombres"
+          placeholder="Ingresa los nombres"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="apellidos">Apellidos *</label>
+        <input
+          id="apellidos"
+          type="text"
+          [(ngModel)]="data.apellidos"
+          name="apellidos"
+          placeholder="Ingresa los apellidos"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo electrónico *</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="data.email"
+          name="email"
+          placeholder="ejemplo@correo.com"
+          required
+        />
+      </div>
+
+      <div class="form-group" *ngIf="isEditMode">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            [(ngModel)]="data.activo"
+            name="activo"
+          />
+          <span>Vigilante activo</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="info-box" *ngIf="!isEditMode">
+      <p>
+        <strong>Nota:</strong> Una vez creado el vigilante, se generará automáticamente una contraseña temporal
+        que deberá cambiar en su primer acceso.
+      </p>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancel()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn-save" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

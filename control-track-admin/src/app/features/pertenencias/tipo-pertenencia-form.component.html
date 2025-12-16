@@ -1,0 +1,94 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ isEditMode ? 'Editar' : 'Nuevo' }} Tipo de Pertenencia</h2>
+    <button class="btn-back" routerLink="/tipos-pertenencia">← Volver</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Cargando...</div>
+
+  <form *ngIf="!loading" (ngSubmit)="save()" class="tipo-form">
+    <div class="section">
+      <h3>Información Básica</h3>
+      
+      <div class="form-group">
+        <label for="nombre">Nombre *</label>
+        <input id="nombre" type="text" [(ngModel)]="tipo.nombre" name="nombre" placeholder="Ej: Vehículo, Laptop, Herramienta" required />
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" [(ngModel)]="tipo.descripcion" name="descripcion" rows="2" placeholder="Descripción opcional"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="tipo.activo" name="activo" />
+          Activo
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Campos Personalizados</h3>
+      <p class="hint">Define los campos que se solicitarán al registrar este tipo de pertenencia</p>
+
+      <div *ngIf="tipo.campos && tipo.campos.length > 0" class="campos-list">
+        <div *ngFor="let campo of tipo.campos; let i = index" class="campo-item">
+          <div class="campo-info">
+            <strong>{{ campo.nombre }}</strong>
+            <span class="campo-tipo">{{ campo.tipo }}</span>
+            <span *ngIf="campo.requerido" class="campo-requerido">Requerido</span>
+            <span *ngIf="campo.opciones && campo.opciones.length" class="campo-opciones">{{ campo.opciones.length }} opciones</span>
+          </div>
+          <div class="campo-actions">
+            <button type="button" class="btn-icon" (click)="moverCampo(i, 'arriba')" [disabled]="i === 0">↑</button>
+            <button type="button" class="btn-icon" (click)="moverCampo(i, 'abajo')" [disabled]="i === tipo.campos!.length - 1">↓</button>
+            <button type="button" class="btn-icon btn-danger" (click)="eliminarCampo(i)">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!tipo.campos || tipo.campos.length === 0" class="empty-campos">
+        <p>No hay campos configurados. Agrega al menos uno.</p>
+      </div>
+
+      <div class="nuevo-campo-form">
+        <h4>Agregar Campo</h4>
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label>Nombre del campo *</label>
+            <input type="text" [(ngModel)]="nuevoCampo.nombre" name="campoNombre" placeholder="Ej: Placa, Serial, Marca" />
+          </div>
+
+          <div class="form-group flex-1">
+            <label>Tipo</label>
+            <select [(ngModel)]="nuevoCampo.tipo" name="campoTipo">
+              <option *ngFor="let tipo of tiposCampo" [value]="tipo.value">{{ tipo.label }}</option>
+            </select>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" [(ngModel)]="nuevoCampo.requerido" name="campoRequerido" />
+              Requerido
+            </label>
+          </div>
+
+          <div class="form-group">
+            <button type="button" class="btn-add" (click)="agregarCampo()">+ Agregar</button>
+          </div>
+        </div>
+
+        <div *ngIf="nuevoCampo.tipo === 'seleccion'" class="form-group">
+          <label>Opciones (separadas por comas)</label>
+          <input type="text" [(ngModel)]="opcionesTemp" name="opciones" placeholder="Opción 1, Opción 2, Opción 3" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">Cancelar</button>
+      <button type="submit" class="btn-primary" [disabled]="loading">{{ loading ? 'Guardando...' : 'Guardar' }}</button>
+    </div>
+  </form>
+</div>

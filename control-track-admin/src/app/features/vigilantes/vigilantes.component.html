@@ -1,0 +1,44 @@
+<div class="vigilantes-container">
+  <div class="header">
+    <h2>Vigilantes</h2>
+    <button class="btn-primary" routerLink="/vigilantes/nuevo">+ Nuevo vigilante</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando vigilantes...
+  </div>
+
+  <table *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Estado</th>
+        <th>Último acceso</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let v of vigilantes">
+        <td>{{ v.nombres }} {{ v.apellidos }}</td>
+        <td>{{ v.email }}</td>
+        <td>
+          <span [class.active]="v.activo" [class.inactive]="!v.activo">
+            {{ v.activo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td>{{ formatDate(v.ultimoAcceso) }}</td>
+        <td class="actions">
+          <button class="btn-edit" [routerLink]="['/vigilantes', v.id]">Editar</button>
+          <button class="btn-reset" (click)="resetPassword(v.id)">Reset</button>
+          <button class="btn-delete" (click)="delete(v.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && vigilantes.length === 0" class="empty-state">
+    No hay vigilantes registrados.
+  </div>
+</div>

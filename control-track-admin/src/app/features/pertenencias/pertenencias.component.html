@@ -1,0 +1,50 @@
+<div class="pertenencias-container">
+  <div class="header">
+    <h2>Pertenencias</h2>
+    <button class="btn-primary" routerLink="/pertenencias/nueva">+ Nueva pertenencia</button>
+  </div>
+
+  <div class="info-banner">
+    <p>
+      Las pertenencias son objetos asociados a usuarios (vehículos, equipos, herramientas, etc.).
+      Cada tipo de pertenencia tiene campos personalizados dinámicos.
+    </p>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando pertenencias...
+  </div>
+
+  <table *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Datos</th>
+        <th>Estado</th>
+        <th>Fecha creación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let p of pertenencias">
+        <td><strong>{{ p.tipoPertenenciaId }}</strong></td>
+        <td>{{ getDatosResumen(p.datos) }}</td>
+        <td>
+          <span [class.estado-dentro]="p.estado === 'ADENTRO'" [class.estado-fuera]="p.estado === 'AFUERA'">
+            {{ p.estado === 'ADENTRO' ? 'Dentro' : 'Fuera' }}
+          </span>
+        </td>
+        <td>{{ formatDate(p.creadoEn) }}</td>
+        <td class="actions">
+          <button class="btn-edit" [routerLink]="['/pertenencias', p.id]">Ver</button>
+          <button class="btn-delete" (click)="delete(p.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && pertenencias.length === 0" class="empty-state">
+    No hay pertenencias registradas. Crea la primera para comenzar.
+  </div>
+</div>

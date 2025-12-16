@@ -1,0 +1,50 @@
+<div class="tipos-usuario-container">
+  <div class="header">
+    <h2>Tipos de usuario</h2>
+    <button class="btn-primary" routerLink="/tipos-usuario/nuevo">+ Nuevo tipo</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando tipos de usuario...
+  </div>
+
+  <div class="info-banner" *ngIf="!loading">
+    <p>
+      Los tipos de usuario permiten clasificar a las personas registradas (empleado, visitante, proveedor, etc.).
+      Los vigilantes seleccionan estos tipos al registrar usuarios.
+    </p>
+  </div>
+
+  <table *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Estado</th>
+        <th>Fecha creación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let t of tipos">
+        <td><strong>{{ t.nombre }}</strong></td>
+        <td>{{ t.descripcion || '-' }}</td>
+        <td>
+          <span [class.active]="t.activo" [class.inactive]="!t.activo">
+            {{ t.activo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td>{{ formatDate(t.creadoEn) }}</td>
+        <td class="actions">
+          <button class="btn-edit" [routerLink]="['/tipos-usuario', t.id]">Editar</button>
+          <button class="btn-delete" (click)="delete(t.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && tipos.length === 0" class="empty-state">
+    No hay tipos de usuario registrados. Crea el primero para comenzar.
+  </div>
+</div>
